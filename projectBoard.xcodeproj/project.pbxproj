@@ -50,6 +50,7 @@
 		2E070EBA1BC1EBFE00EDD7ED /* bg~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 2E070EAD1BC1EBFE00EDD7ED /* bg~iphone.png */; settings = {ASSET_TAGS = (); }; };
 		2E070EBB1BC1EBFE00EDD7ED /* bg~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 2E070EAD1BC1EBFE00EDD7ED /* bg~iphone.png */; settings = {ASSET_TAGS = (); }; };
 		2E070EBC1BC1EBFE00EDD7ED /* bg~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 2E070EAD1BC1EBFE00EDD7ED /* bg~iphone.png */; settings = {ASSET_TAGS = (); }; };
+		2ED347131BC41149009B5686 /* home_bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2ED347121BC41149009B5686 /* home_bg.jpg */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,6 +106,7 @@
 		2E070EAB1BC1EBFE00EDD7ED /* bg@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg@2x~iphone.png"; sourceTree = "<group>"; };
 		2E070EAC1BC1EBFE00EDD7ED /* bg~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg~ipad.png"; sourceTree = "<group>"; };
 		2E070EAD1BC1EBFE00EDD7ED /* bg~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg~iphone.png"; sourceTree = "<group>"; };
+		2ED347121BC41149009B5686 /* home_bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = home_bg.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,6 +170,7 @@
 				2E070E561BC1BCE100EDD7ED /* Assets.xcassets */,
 				2E070E581BC1BCE100EDD7ED /* LaunchScreen.storyboard */,
 				2E070E5B1BC1BCE100EDD7ED /* Info.plist */,
+				2ED347121BC41149009B5686 /* home_bg.jpg */,
 				2E070E451BC1BCE100EDD7ED /* Supporting Files */,
 				2E070E8B1BC1C17000EDD7ED /* InstructionView.h */,
 				2E070E8C1BC1C17000EDD7ED /* InstructionView.m */,
@@ -340,6 +343,7 @@
 				2E070E7E1BC1BE8F00EDD7ED /* home_bg.jpg in Resources */,
 				2E070EAE1BC1EBFE00EDD7ED /* assets.atlas in Resources */,
 				2E070E5A1BC1BCE100EDD7ED /* LaunchScreen.storyboard in Resources */,
+				2ED347131BC41149009B5686 /* home_bg.jpg in Resources */,
 				2E070EB11BC1EBFE00EDD7ED /* bg@2x~ipad.png in Resources */,
 				2E070EBA1BC1EBFE00EDD7ED /* bg~iphone.png in Resources */,
 				2E070E571BC1BCE100EDD7ED /* Assets.xcassets in Resources */,
@@ -629,6 +633,7 @@
 				2E070E761BC1BCE100EDD7ED /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		2E070E771BC1BCE100EDD7ED /* Build configuration list for PBXNativeTarget "projectBoardTests" */ = {
 			isa = XCConfigurationList;
@@ -637,6 +642,7 @@
 				2E070E791BC1BCE100EDD7ED /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		2E070E7A1BC1BCE100EDD7ED /* Build configuration list for PBXNativeTarget "projectBoardUITests" */ = {
 			isa = XCConfigurationList;
@@ -645,6 +651,7 @@
 				2E070E7C1BC1BCE100EDD7ED /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

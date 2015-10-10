@@ -15,15 +15,17 @@ static const uint32_t malletCategory = 0x1 << 1;
 static const uint32_t goalCategory = 0x1 << 2;
 //static const uint32_t bodyCategory = 0x1 << 3;
 
+//length of vector
+static inline float vectorLength(CGVector a){
+    return sqrtf(a.dx*a.dx+a.dy*a.dy);
+}
+
 @interface GameScene()<SKPhysicsContactDelegate>
 
 @property (nonatomic)CMMotionManager *motionManager;
 @property (nonatomic)double startX;
 @property (nonatomic)double startY;
-@property (nonatomic)double theX;
-@property (nonatomic)double theY;
-@property (nonatomic)double velocityX;
-@property (nonatomic)double velocityY;
+
 @property (strong, nonatomic) NSDate *lastUpdateTime;
 @property (nonatomic)double MAXX;
 @property (nonatomic)double MAXY;
@@ -69,9 +71,10 @@ static const uint32_t goalCategory = 0x1 << 2;
         //make the physics body of puck
         puck.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:puck.size.width/2];
         puck.physicsBody.friction = 0.0f;
-        puck.physicsBody.restitution = 1.0f;
+        puck.physicsBody.restitution = 0.9f;
         puck.physicsBody.linearDamping = 0.0f;
         puck.physicsBody.density = 1.0f;
+        puck.physicsBody.mass = 1.0f;
         puck.physicsBody.allowsRotation = YES;
         puck.name = @"puck";
         [self addChild:puck];
@@ -86,11 +89,13 @@ static const uint32_t goalCategory = 0x1 << 2;
         mallet.physicsBody.friction = 0.0f;
         mallet.physicsBody.restitution = 1.0f;
         mallet.physicsBody.linearDamping = 0.0f;
-        mallet.physicsBody.density= 10000.0f;
+        mallet.physicsBody.density= 100000.0f; //fail to simulate the speed for mallet to have force from moving object
+        mallet.physicsBody.mass = 100000.0f;
+        
         mallet.name = @"mallet";
         [self addChild:mallet];
         
-        mallet.physicsBody.dynamic = NO;
+        mallet.physicsBody.dynamic = YES;
         
         //set up oponent mallet
         SKSpriteNode *oponent = [SKSpriteNode spriteNodeWithImageNamed:@"seal.png"];
@@ -100,7 +105,8 @@ static const uint32_t goalCategory = 0x1 << 2;
         oponent.physicsBody.friction = 0.0f;
         oponent.physicsBody.restitution = 1.0f;
         oponent.physicsBody.linearDamping = 0.0f;
-        oponent.physicsBody.density=10000.0f;
+        oponent.physicsBody.density=1000.0f;
+        oponent.physicsBody.mass = 1000.0f;
         oponent.name = @"oponent";
         [self addChild:oponent];
         
@@ -140,56 +146,30 @@ static const uint32_t goalCategory = 0x1 << 2;
         self.MAXX = self.frame.size.width - mallet.size.width/2;
         self.MAXY = self.frame.size.height/2 - mallet.size.height;
         NSLog(@"start rote X: %f start rote Y: %f",self.startX,self.startY);
-        
+//        
         [self.motionManager startAccelerometerUpdatesToQueue:[NSOperationQueue new] withHandler:^(CMAccelerometerData *acceData, NSError *error){
             
             NSTimeInterval secondsSinceLastDraw = -([self.lastUpdateTime timeIntervalSinceNow]);
-            self.velocityX += acceData.acceleration.x *secondsSinceLastDraw;
-            self.velocityY += acceData.acceleration.y *secondsSinceLastDraw;
             
-            self.theX = self.startX + secondsSinceLastDraw *self.velocityX*500;
-            self.theY = self.startY + secondsSinceLastDraw *self.velocityY*1000;
+            
+            self.startX = self.startX + secondsSinceLastDraw *acceData.acceleration.x*500;
+            self.startY = self.startY + secondsSinceLastDraw *acceData.acceleration.y*1000;
             //NSLog(@"the X: %f the Y: %f",self.theX,self.theY);
             
-            self.startX = MIN(self.MAXX, self.theX);
+            self.startX = MIN(self.MAXX, self.startX);
             self.startX = MAX(mallet.size.width/2, self.startX);
-            self.startY = MAX(mallet.size.width/2, self.theY);
+            self.startY = MAX(mallet.size.width/2, self.startY);
             self.startY = MIN(self.MAXY, self.startY);
             
-            
-            self.theX=self.startX;
-            self.theY=self.startY;
-            
-            //[self.scrollView scrollRectToVisible:CGRectMake(self.startX, self.startY, self.view.frame.size.width, self.view.frame.size.height) animated:YES];
             mallet.position = CGPointMake(self.startX, self.startY);
-            CGVector force = [self getVectorfrom:puck.position to:mallet.position];
-            [oponent.physicsBody applyImpulse:[self getVectorfrom:puck.position to:oponent.position]];
-           // NSLog(@"start acc X: %f start acc Y: %f",self.startX,self.startY);
+
             self.lastUpdateTime = [NSDate date];
 
         }];
         
-//        [self.motionManager startGyroUpdatesToQueue:[NSOperationQueue new] withHandler:^(CMGyroData *gyroData,NSError *error){
-//            
-//            NSTimeInterval secondsSinceLastDraw = -([self.lastUpdateTime timeIntervalSinceNow]);
-//            self.velocityX += gyroData.rotationRate.y *secondsSinceLastDraw;
-//            //self.velocityY += gyroData.rotationRate.y *secondsSinceLastDraw;
-//            
-//            self.theX = self.startX + secondsSinceLastDraw *self.velocityX*100;
-//            //self.theY = self.startY + secondsSinceLastDraw *self.velocityY*300;
-//                    NSLog(@"the X: %f the Y: %f",self.theX,self.theY);
-//            self.startX = MAX(0.0, self.theX);
-//            self.startX = MIN(self.MAXX, self.theX);
-//            //self.startY = MAX(0.0, self.theY);
-//            //self.startY = MIN(self.MAXY, self.theY);
-//            
-//            //[self.scrollView scrollRectToVisible:CGRectMake(self.startX, self.startY, self.view.frame.size.width, self.view.frame.size.height) animated:YES];
-//            mallet.position = CGPointMake(self.startX, self.startY);
-//            NSLog(@"start rote X: %f start rote Y: %f",self.startX,self.startY);
-//            self.lastUpdateTime = [NSDate date];
-//        }];
+
         
-        self.flag == NO;
+        self.flag = NO;
 
     };
     return self;
@@ -205,7 +185,7 @@ static const uint32_t goalCategory = 0x1 << 2;
 -(CGVector)getVectorfrom:(CGPoint)point1
                       to:(CGPoint)point2{
     
-    return CGVectorMake(0.5*(point2.x-point1.x), 0.5*(point2.y-point1.y));
+    return CGVectorMake(10*(point2.x-point1.x), 10*(point2.y-point1.y));
 }
 
 -(void)didBeginContact:(SKPhysicsContact *)contact{
@@ -225,24 +205,35 @@ static const uint32_t goalCategory = 0x1 << 2;
         SKSpriteNode *puck =(SKSpriteNode *)[self childNodeWithName:@"puck"];
         SKSpriteNode *mallet =(SKSpriteNode *)[self childNodeWithName:@"mallet"];
         NSLog(@" go inside contact between puck and mallet");
-        if (self.flag == NO) {
-            [puck.physicsBody applyImpulse:[self getVectorfrom:puck.position to:mallet.position]];
-            self.flag = YES;
+        if ([self checkspeed]==YES) {
+           [puck.physicsBody applyImpulse:[self getVectorfrom:puck.position to:mallet.position]];
+          
         } else {
+//            [puck.physicsBody applyImpulse:[self getVectorfrom:puck.position to:mallet.position]];
             CGVector force = [self getVectorfrom:puck.position to:mallet.position];
-            CGVector mforce = CGVectorMake(force.dx*50, force.dy*50);
+            CGVector mforce = CGVectorMake(force.dx*500000, force.dy*500000);
             [puck.physicsBody applyForce:mforce];
         }
         
     }
 }
-
+-(BOOL)checkspeed{
+    SKSpriteNode *puck =(SKSpriteNode *)[self childNodeWithName:@"puck"];
+    
+    float speed = vectorLength(puck.physicsBody.velocity);
+    NSLog(@"speed of puck %f",speed);
+    if (speed < 100){
+        return YES;
+    }
+    return NO;
+}
 -(void)update:(CFTimeInterval)currentTime {
     /* Called before each frame is rendered */
-    SKSpriteNode *puck =(SKSpriteNode *)[self childNodeWithName:@"puck"];
-    SKSpriteNode *oponent =(SKSpriteNode *)[self childNodeWithName:@"oponent"];
-    CGVector force = [self getVectorfrom:puck.position to:oponent.position];
-    [oponent.physicsBody applyImpulse:[self getVectorfrom:puck.position to:oponent.position]];
+   // SKSpriteNode *puck =(SKSpriteNode *)[self childNodeWithName:@"puck"];
+   // SKSpriteNode *oponent =(SKSpriteNode *)[self childNodeWithName:@"oponent"];
+   // CGVector force = [self getVectorfrom:puck.position to:oponent.position];
+  //  CGVector mforce = CGVectorMake(force.dx*10, force.dy*10);
+   // [oponent.physicsBody applyForce:mforce];
 }
 
 @end
