@@ -6,16 +6,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "projectBoard/GameScene.m"
-            timestampString = "466144919.211457"
+            timestampString = "466150093.617345"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "215"
-            endingLineNumber = "215"
-            landmarkName = "-didBeginContact:"
+            startingLineNumber = "168"
+            endingLineNumber = "168"
+            landmarkName = "-setupPhysicsContact"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
