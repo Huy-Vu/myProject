@@ -26,7 +26,8 @@ static inline float vectorLength(CGVector a){
 @property (nonatomic)double startX;
 @property (nonatomic)double startY;
 
-@property (strong, nonatomic) NSDate *lastUpdateTime;
+@property (nonatomic) NSDate *lastUpdateTime;
+@property (nonatomic)NSTimeInterval lastUpdateTimeInterval;
 @property (nonatomic)double MAXX;
 @property (nonatomic)double MAXY;
 @property (nonatomic)BOOL flag;
@@ -135,47 +136,52 @@ static inline float vectorLength(CGVector a){
         
         puck.physicsBody.collisionBitMask = malletCategory; //physics force when puck interact with mallet
         
-        //try to deal with positioning
-        self.motionManager = [CMMotionManager new];
-        self.motionManager.accelerometerUpdateInterval = .1;
-        self.motionManager.gyroUpdateInterval = .1;
+        [self positioning];
         
-        self.lastUpdateTime = [[NSDate alloc] init];
-        self.startX = self.frame.size.width/2;
-        self.startY = mallet.size.height/2;
-        self.MAXX = self.frame.size.width - mallet.size.width/2;
-        self.MAXY = self.frame.size.height/2 - mallet.size.height;
-        NSLog(@"start rote X: %f start rote Y: %f",self.startX,self.startY);
-//        
-        [self.motionManager startAccelerometerUpdatesToQueue:[NSOperationQueue new] withHandler:^(CMAccelerometerData *acceData, NSError *error){
-            
-            NSTimeInterval secondsSinceLastDraw = -([self.lastUpdateTime timeIntervalSinceNow]);
-            
-            
-            self.startX = self.startX + secondsSinceLastDraw *acceData.acceleration.x*500;
-            self.startY = self.startY + secondsSinceLastDraw *acceData.acceleration.y*1000;
-            //NSLog(@"the X: %f the Y: %f",self.theX,self.theY);
-            
-            self.startX = MIN(self.MAXX, self.startX);
-            self.startX = MAX(mallet.size.width/2, self.startX);
-            self.startY = MAX(mallet.size.width/2, self.startY);
-            self.startY = MIN(self.MAXY, self.startY);
-            
-            mallet.position = CGPointMake(self.startX, self.startY);
-
-            self.lastUpdateTime = [NSDate date];
-
-        }];
-        
-
-        
-        self.flag = NO;
-
     };
     return self;
 }
 
+-(void)positioning{
+    SKSpriteNode *mallet = (SKSpriteNode *)[self childNodeWithName:@"mallet"];
+    
+    //try to deal with positioning
+    self.motionManager = [CMMotionManager new];
+    self.motionManager.accelerometerUpdateInterval = 1.0/60.0;
+    self.motionManager.gyroUpdateInterval = .05;
+    
+    self.lastUpdateTime = [[NSDate alloc] init];
+    self.startX = self.frame.size.width/2;
+    self.startY = mallet.size.height/2;
+    self.MAXX = self.frame.size.width - mallet.size.width/2;
+    self.MAXY = self.frame.size.height/2 - mallet.size.height;
+    NSLog(@"start rote X: %f start rote Y: %f",self.startX,self.startY);
+    //
+    [self.motionManager startAccelerometerUpdatesToQueue:[NSOperationQueue new] withHandler:^(CMAccelerometerData *acceData, NSError *error){
+        
+        
+       // NSTimeInterval secondsSinceLastDraw = -([self.lastUpdateTime timeIntervalSinceNow]);
+        NSTimeInterval secondsSinceLastDraw = self.lastUpdateTimeInterval;
+        if (secondsSinceLastDraw >1) {
+            secondsSinceLastDraw = 1.0/60.0;
+        }
+        
+        self.startX = self.startX + secondsSinceLastDraw *acceData.acceleration.x*500;
+        self.startY = self.startY + secondsSinceLastDraw *acceData.acceleration.y*1000;
+        //NSLog(@"the X: %f the Y: %f",self.theX,self.theY);
+        
+        self.startX = MIN(self.MAXX, self.startX);
+        self.startX = MAX(mallet.size.width/2, self.startX);
+        self.startY = MAX(mallet.size.width/2, self.startY);
+        self.startY = MIN(self.MAXY, self.startY);
+        
+        mallet.position = CGPointMake(self.startX, self.startY);
+        
+    //    self.lastUpdateTime = [NSDate date];
+        
+    }];
 
+}
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     /* Called when a touch begins */
@@ -229,6 +235,16 @@ static inline float vectorLength(CGVector a){
 }
 -(void)update:(CFTimeInterval)currentTime {
     /* Called before each frame is rendered */
+    //handle time delta.
+    //If we drop below 60fps, we still want everything to move the same distance.
+    CFTimeInterval timeSinceLast = currentTime - self.lastUpdateTimeInterval ;
+    self.lastUpdateTimeInterval = currentTime;
+    if (timeSinceLast > 1){ //more than a second since last update
+        timeSinceLast = 1.0/60.0;
+        self.lastUpdateTimeInterval = currentTime;
+    }
+
+    
    // SKSpriteNode *puck =(SKSpriteNode *)[self childNodeWithName:@"puck"];
    // SKSpriteNode *oponent =(SKSpriteNode *)[self childNodeWithName:@"oponent"];
    // CGVector force = [self getVectorfrom:puck.position to:oponent.position];
