@@ -23,6 +23,20 @@ static inline float vectorLength(CGVector a){
 static inline CGVector addVector(CGVector a,CGVector b){
     return CGVectorMake(a.dx+b.dx, a.dy+b.dy);
 }
+//substract vector
+static inline CGVector subVector(CGVector a,CGVector b){
+    return CGVectorMake(a.dx-b.dx, a.dy-b.dy);
+}
+//normalize the vector
+static inline CGVector normalizeVector(CGVector a){
+    float length = vectorLength(a);
+    return CGVectorMake(a.dx/length, a.dy/length);
+}
+//boost Vector
+static inline CGVector boostVector(CGVector a, float b){
+    return CGVectorMake(a.dx*b, a.dy*b);
+}
+
 
 @interface GameScene()<SKPhysicsContactDelegate>
 
@@ -37,6 +51,8 @@ static inline CGVector addVector(CGVector a,CGVector b){
 @property (nonatomic)BOOL flag;
 @property (nonatomic)int scorePlayer;
 @property (nonatomic)int scoreOpponent;
+@property (nonatomic)float speedOpponent;
+@property (nonatomic)CGPoint targetOpponent;
 @end
 
 @implementation GameScene
@@ -48,7 +64,7 @@ static inline CGVector addVector(CGVector a,CGVector b){
 
 -(id)initWithSize:(CGSize)size{
     if (self == [super initWithSize:size]) {
-        
+
         self.physicsWorld.contactDelegate = self;
         //set up the physics world with no gravity, it bases on vector value
         self.physicsWorld.gravity = CGVectorMake(0.0f, 0.0f);
@@ -72,7 +88,7 @@ static inline CGVector addVector(CGVector a,CGVector b){
         
         [self add_puck];
         [self add_mallet];
-        //[self add_opponent];
+        [self add_opponent];
         
         self.scorePlayer = 0;
         self.scoreOpponent = 0;
@@ -83,6 +99,9 @@ static inline CGVector addVector(CGVector a,CGVector b){
         
         [self positioning];
         
+        //setting the difficulty of game:
+        self.speedOpponent = 20000.0;
+
     };
     return self;
 }
@@ -130,13 +149,13 @@ static inline CGVector addVector(CGVector a,CGVector b){
     opponent.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:opponent.size.height/2];
     opponent.physicsBody.friction = 0.0f;
     opponent.physicsBody.restitution = 1.0f;
-    opponent.physicsBody.linearDamping = 0.0f;
-    opponent.physicsBody.density=1000.0f;
-    opponent.physicsBody.mass = 1000.0f;
+    opponent.physicsBody.linearDamping = 1.0f;
+    opponent.physicsBody.density=1.0f;
+    opponent.physicsBody.mass = 10.0f;
     opponent.name = @"opponent";
     [self addChild:opponent];
-    
-    opponent.physicsBody.dynamic = YES;
+
+//    opponent.physicsBody.dynamic = YES;
 }
 
 -(void)add_goals{
@@ -242,6 +261,44 @@ static inline CGVector addVector(CGVector a,CGVector b){
     [self addChild:scoreOpponent];
 }
 
+-(void)opponentMoving{
+    
+    SKSpriteNode *opponent = (SKSpriteNode *)[self childNodeWithName:@"opponent"];
+    SKSpriteNode *puck = (SKSpriteNode *)[self childNodeWithName:@"puck"];
+    
+    //self.targetOpponent = CGPointMake(<#CGFloat x#>, <#CGFloat y#>)
+    
+    //vector to steer the puck, target is the very top point of moving puck
+
+    CGVector toPuck = CGVectorMake(puck.position.x-opponent.position.x, puck.position.y+puck.size.height-opponent.position.y);
+    CGVector normalizeToPuck = normalizeVector(toPuck);
+    CGVector boostSteerOpponent = boostVector(normalizeToPuck, self.speedOpponent);
+    
+    //vector to come back original position
+    CGVector backOrigin = CGVectorMake(self.frame.size.width/2-opponent.position.x, self.frame.size.height-opponent.size.height/2-opponent.position.y);
+    CGVector normalizeBackOrigin = normalizeVector(backOrigin);
+    CGVector boostBackOrigin = boostVector(normalizeBackOrigin, self.speedOpponent);
+    
+    if (puck.position.y > self.frame.size.height/2) {
+        [opponent.physicsBody applyForce:boostSteerOpponent];
+    } else{
+        [opponent.physicsBody applyForce:boostBackOrigin];
+    }
+    
+    // New method to computing 2D Vector : GLKVector2
+    //    //Work out the direction to this position
+    //    GLKVector2 opponentPosition = GLKVector2Make(opponent.position.x, opponent.position.y);
+    //    GLKVector2 targetPosition = GLKVector2Make(puck.position.x, puck.position.y);
+    //
+    //    GLKVector2 offset = GLKVector2Subtract(targetPosition, opponentPosition);
+    //
+    //    //Reduce this vector to be the same length as our movement speed
+    //    offset = GLKVector2Normalize(offset);
+    //    offset = GLKVector2MultiplyScalar(offset, 5000);
+    //
+    //    [opponent.physicsBody applyForce:CGVectorMake(offset.x, offset.y)];
+}
+
 -(void)flashMessage:(NSString *)message atPosition:(CGPoint)position duration:(NSTimeInterval)duration{
     //a method to make a sprite for a flash message at a certain position on the screen
     //to be used for instructions
@@ -312,6 +369,7 @@ static inline CGVector addVector(CGVector a,CGVector b){
     if (firstBody.categoryBitMask == puckCategory && secondBody.categoryBitMask == goalCategory) {
         SKSpriteNode *puck = (SKSpriteNode *)[self childNodeWithName:@"puck"];
         SKSpriteNode *mallet = (SKSpriteNode *)[self childNodeWithName:@"mallet"];
+        SKSpriteNode *opponent = (SKSpriteNode *)[self childNodeWithName:@"opponent"];
        // SKSpriteNode *goal = (SKSpriteNode *)[self childNodeWithName:@"goal"];
         
         [self flashMessage:@"GOOAL!!!" atPosition:CGPointMake(self.frame.size.width/2, self.frame.size.height/2) duration:2];
@@ -321,8 +379,10 @@ static inline CGVector addVector(CGVector a,CGVector b){
         
         [puck removeFromParent];
         [mallet removeFromParent];
+        [opponent removeFromParent];
         [self add_puck];
         [self add_mallet];
+        [self add_opponent];
         [self setupPhysicsContact];
         [self positioning];
         [self score:self.scorePlayer and:self.scoreOpponent];
@@ -348,13 +408,8 @@ static inline CGVector addVector(CGVector a,CGVector b){
         timeSinceLast = 1.0/60.0;
         self.lastUpdateTimeInterval = currentTime;
     }
+    [self opponentMoving];
 
-    
-   // SKSpriteNode *puck =(SKSpriteNode *)[self childNodeWithName:@"puck"];
-   // SKSpriteNode *opponent =(SKSpriteNode *)[self childNodeWithName:@"opponent"];
-   // CGVector force = [self getVectorfrom:puck.position to:opponent.position];
-  //  CGVector mforce = CGVectorMake(force.dx*10, force.dy*10);
-   // [opponent.physicsBody applyForce:mforce];
 }
 
 @end
