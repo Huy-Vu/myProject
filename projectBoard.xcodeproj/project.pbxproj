@@ -50,6 +50,9 @@
 		2E070EBA1BC1EBFE00EDD7ED /* bg~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 2E070EAD1BC1EBFE00EDD7ED /* bg~iphone.png */; settings = {ASSET_TAGS = (); }; };
 		2E070EBB1BC1EBFE00EDD7ED /* bg~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 2E070EAD1BC1EBFE00EDD7ED /* bg~iphone.png */; settings = {ASSET_TAGS = (); }; };
 		2E070EBC1BC1EBFE00EDD7ED /* bg~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 2E070EAD1BC1EBFE00EDD7ED /* bg~iphone.png */; settings = {ASSET_TAGS = (); }; };
+		2ED12D571BCB7A0300327C76 /* MGameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 2ED12D561BCB7A0300327C76 /* MGameScene.sks */; settings = {ASSET_TAGS = (); }; };
+		2ED12D5D1BCB7AC700327C76 /* MGameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ED12D5C1BCB7AC700327C76 /* MGameScene.m */; settings = {ASSET_TAGS = (); }; };
+		2ED12D601BCB7B2800327C76 /* MGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ED12D5F1BCB7B2800327C76 /* MGameViewController.m */; settings = {ASSET_TAGS = (); }; };
 		2ED347131BC41149009B5686 /* home_bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2ED347121BC41149009B5686 /* home_bg.jpg */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
@@ -106,6 +109,11 @@
 		2E070EAB1BC1EBFE00EDD7ED /* bg@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg@2x~iphone.png"; sourceTree = "<group>"; };
 		2E070EAC1BC1EBFE00EDD7ED /* bg~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg~ipad.png"; sourceTree = "<group>"; };
 		2E070EAD1BC1EBFE00EDD7ED /* bg~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg~iphone.png"; sourceTree = "<group>"; };
+		2ED12D561BCB7A0300327C76 /* MGameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MGameScene.sks; sourceTree = "<group>"; };
+		2ED12D5B1BCB7AAE00327C76 /* MGameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGameScene.h; sourceTree = "<group>"; };
+		2ED12D5C1BCB7AC700327C76 /* MGameScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGameScene.m; sourceTree = "<group>"; };
+		2ED12D5E1BCB7B0700327C76 /* MGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGameViewController.h; sourceTree = "<group>"; };
+		2ED12D5F1BCB7B2800327C76 /* MGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGameViewController.m; sourceTree = "<group>"; };
 		2ED347121BC41149009B5686 /* home_bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = home_bg.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -164,6 +172,11 @@
 				2E070E4E1BC1BCE100EDD7ED /* GameScene.sks */,
 				2E070E501BC1BCE100EDD7ED /* GameViewController.h */,
 				2E070E511BC1BCE100EDD7ED /* GameViewController.m */,
+				2ED12D5B1BCB7AAE00327C76 /* MGameScene.h */,
+				2ED12D5C1BCB7AC700327C76 /* MGameScene.m */,
+				2ED12D561BCB7A0300327C76 /* MGameScene.sks */,
+				2ED12D5E1BCB7B0700327C76 /* MGameViewController.h */,
+				2ED12D5F1BCB7B2800327C76 /* MGameViewController.m */,
 				2E070EA71BC1EBFE00EDD7ED /* Resources */,
 				2E070E7D1BC1BE8F00EDD7ED /* home_bg.jpg */,
 				2E070E531BC1BCE100EDD7ED /* Main.storyboard */,
@@ -344,6 +357,7 @@
 				2E070EAE1BC1EBFE00EDD7ED /* assets.atlas in Resources */,
 				2E070E5A1BC1BCE100EDD7ED /* LaunchScreen.storyboard in Resources */,
 				2ED347131BC41149009B5686 /* home_bg.jpg in Resources */,
+				2ED12D571BCB7A0300327C76 /* MGameScene.sks in Resources */,
 				2E070EB11BC1EBFE00EDD7ED /* bg@2x~ipad.png in Resources */,
 				2E070EBA1BC1EBFE00EDD7ED /* bg~iphone.png in Resources */,
 				2E070E571BC1BCE100EDD7ED /* Assets.xcassets in Resources */,
@@ -389,9 +403,11 @@
 				2E070E9C1BC1C1CE00EDD7ED /* HomeView.m in Sources */,
 				2E070E4A1BC1BCE100EDD7ED /* AppDelegate.m in Sources */,
 				2E070E8D1BC1C17000EDD7ED /* InstructionView.m in Sources */,
+				2ED12D5D1BCB7AC700327C76 /* MGameScene.m in Sources */,
 				2E070E971BC1C1A400EDD7ED /* AboutView.m in Sources */,
 				2E070E921BC1C19200EDD7ED /* SettingsView.m in Sources */,
 				2E070EA11BC1C1E200EDD7ED /* MultiplayerView.m in Sources */,
+				2ED12D601BCB7B2800327C76 /* MGameViewController.m in Sources */,
 				2E070E4D1BC1BCE100EDD7ED /* GameScene.m in Sources */,
 				2E070E471BC1BCE100EDD7ED /* main.m in Sources */,
 			);

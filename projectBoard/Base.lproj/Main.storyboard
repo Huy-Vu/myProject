@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BV1-FR-VrT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="ibU-YI-318">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
@@ -152,15 +152,15 @@
             </objects>
             <point key="canvasLocation" x="674" y="1265"/>
         </scene>
-        <!--Multiplayer View-->
+        <!--M Game View Controller-->
         <scene sceneID="okZ-5e-5kv">
             <objects>
-                <viewController storyboardIdentifier="MultiplayerView" id="ibU-YI-318" customClass="MultiplayerView" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MultiplayerView" title="M Game View Controller" id="ibU-YI-318" customClass="MGameViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="wSF-sr-osI"/>
                         <viewControllerLayoutGuide type="bottom" id="PBP-sh-fzT"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="hSB-Uu-dE7">
+                    <view key="view" contentMode="scaleToFill" id="hSB-Uu-dE7" customClass="SKView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
