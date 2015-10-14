@@ -48,11 +48,13 @@ static inline CGVector boostVector(CGVector a, float b){
 @property (nonatomic)NSTimeInterval lastUpdateTimeInterval;
 @property (nonatomic)double MAXX;
 @property (nonatomic)double MAXY;
-@property (nonatomic)BOOL flag;
+
 @property (nonatomic)int scorePlayer;
 @property (nonatomic)int scoreOpponent;
 @property (nonatomic)float speedOpponent;
 @property (nonatomic)CGPoint targetOpponent;
+
+@property (nonatomic)CGVector speedPlayer;
 @end
 
 @implementation GameScene
@@ -100,7 +102,7 @@ static inline CGVector boostVector(CGVector a, float b){
         [self positioning];
         
         //setting the difficulty of game:
-        self.speedOpponent = 20000.0;
+        self.speedOpponent = 10000.0;
 
     };
     return self;
@@ -217,8 +219,10 @@ static inline CGVector boostVector(CGVector a, float b){
             secondsSinceLastDraw = 1.0/60.0;
         }
         
-        self.startX = self.startX + secondsSinceLastDraw *acceData.acceleration.x*500;
-        self.startY = self.startY + secondsSinceLastDraw *acceData.acceleration.y*1000;
+        self.startX = self.startX + secondsSinceLastDraw *acceData.acceleration.x*700;
+        self.startY = self.startY + secondsSinceLastDraw *acceData.acceleration.y*1500;
+        
+        
         //NSLog(@"the X: %f the Y: %f",self.theX,self.theY);
         
         self.startX = MIN(self.MAXX, self.startX);
@@ -383,6 +387,7 @@ static inline CGVector boostVector(CGVector a, float b){
         [self add_puck];
         [self add_mallet];
         [self add_opponent];
+        
         [self setupPhysicsContact];
         [self positioning];
         [self score:self.scorePlayer and:self.scoreOpponent];

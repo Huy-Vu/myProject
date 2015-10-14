@@ -48,7 +48,11 @@
     skView.ignoresSiblingOrder = YES;
     
     // Create and configure the scene.
-    self.gameScene = [MGameScene unarchiveFromFile:@"GameScene"];
+    
+    //CGSize mysize = CGSizeMake(640, 1136);
+    //self.gameScene = [MGameScene sceneWithSize:mysize];
+    self.gameScene = [MGameScene sceneWithSize:skView.frame.size];
+    //self.gameScene = [MGameScene unarchiveFromFile:@"GameScene"];
     self.gameScene.scaleMode = SKSceneScaleModeAspectFill;
     
     self.gameScene.gameSceneDelegate = self;
