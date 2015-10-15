@@ -130,5 +130,8 @@
     [self presentViewController:viewController animated:YES completion:nil];
 }
 
+- (IBAction)stopButton:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 @end

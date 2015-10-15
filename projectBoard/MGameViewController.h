@@ -11,5 +11,6 @@
 
 @interface MGameViewController : UIViewController
 
-
+@property (nonatomic) NSString *thebackground;
+@property (nonatomic) NSString *themallet;
 @end

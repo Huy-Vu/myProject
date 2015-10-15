@@ -13,7 +13,8 @@
 static const uint32_t puckCategory = 0x1 << 0;
 static const uint32_t malletCategory = 0x1 << 1;
 static const uint32_t goalCategory = 0x1 << 2;
-//static const uint32_t bodyCategory = 0x1 << 3;
+static const uint32_t borderCategory = 0x1 << 3;
+static const uint32_t opponentCategory = 0x1 << 4;
 
 //length of vector
 static inline float vectorLength(CGVector a){
@@ -55,58 +56,148 @@ static inline CGVector boostVector(CGVector a, float b){
 @property (nonatomic)CGPoint targetOpponent;
 
 @property (nonatomic)CGVector speedPlayer;
+
+@property (nonatomic)int scoreWin;
+//extern NSString * thebackgound;
+//extern NSString * themallet;
 @end
 
 @implementation GameScene
 
 -(void)didMoveToView:(SKView *)view {
     /* Setup your scene here */
+    [self addGameBackground];
     
+    [self add_puck];
+    [self add_mallet];
+    [self add_opponent];
+    
+    self.scorePlayer = 0;
+    self.scoreOpponent = 0;
+    [self score:self.scorePlayer and:self.scoreOpponent];
+    
+    [self add_goals];
+    [self setupPhysicsContact];
+    
+    //[self positioning];
+    
+    //setting the difficulty of game:
+    self.speedOpponent = 1000000.0;
+    self.scoreWin =3;
 }
 
 -(id)initWithSize:(CGSize)size{
     if (self == [super initWithSize:size]) {
 
-        self.physicsWorld.contactDelegate = self;
-        //set up the physics world with no gravity, it bases on vector value
-        self.physicsWorld.gravity = CGVectorMake(0.0f, 0.0f);
-        
-        //set up the backgound (playfield)
-        SKSpriteNode *body = [SKSpriteNode spriteNodeWithColor:[UIColor grayColor] size:self.frame.size];
-        body.position = CGPointMake(self.frame.size.width/2, self.frame.size.height/2);
-        [self addChild:body];
-        
-        //cannot use node as the static edge?
-//        body.physicsBody = [SKPhysicsBody bodyWithEdgeLoopFromRect:CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, self.frame.size.height)];
-//        body.physicsBody.friction =0.0f;
-        
-        // set up the evironment of box2D
-        //1 create a physics body that borders the screen
-        SKPhysicsBody *borderBody = [SKPhysicsBody bodyWithEdgeLoopFromRect:self.frame];
-        //2 Set physicsBody of scene to borderBody
-        self.physicsBody = borderBody;
-        //3 Set the friction of that physicsBody to zero
-        self.physicsBody.friction =0.0f;
-        
-        [self add_puck];
-        [self add_mallet];
-        [self add_opponent];
-        
-        self.scorePlayer = 0;
-        self.scoreOpponent = 0;
-        [self score:self.scorePlayer and:self.scoreOpponent];
-        
-        [self add_goals];
-        [self setupPhysicsContact];
-        
-        [self positioning];
-        
-        //setting the difficulty of game:
-        self.speedOpponent = 10000.0;
-
     };
     return self;
 }
+
+-(void)reset{
+    
+    SKSpriteNode *puck = (SKSpriteNode *)[self childNodeWithName:@"puck"];
+    SKSpriteNode *mallet = (SKSpriteNode *)[self childNodeWithName:@"mallet"];
+    SKSpriteNode *opponent = (SKSpriteNode *)[self childNodeWithName:@"opponent"];
+    
+    [puck removeFromParent];
+    [mallet removeFromParent];
+    [opponent removeFromParent];
+    
+    
+    [self add_puck];
+    [self add_mallet];
+    [self add_opponent];
+    [self setupPhysicsContact];
+    SKSpriteNode *over = (SKSpriteNode *)[self childNodeWithName:@"over"];
+    [over removeFromParent];
+    self.scorePlayer = 0;
+    self.scoreOpponent = 0;
+    [self score:self.scorePlayer and:self.scoreOpponent];
+
+}
+
+-(void)addGameBackground
+{
+    self.physicsWorld.contactDelegate = self;
+    //set up the physics world with no gravity, it bases on vector value
+    self.physicsWorld.gravity = CGVectorMake(0.0f, 0.0f);
+    
+    //set up the backgound (playfield)
+    
+    SKSpriteNode *body = [SKSpriteNode spriteNodeWithImageNamed:self.thebackground];
+    //SKSpriteNode *body = [SKSpriteNode spriteNodeWithColor:[UIColor grayColor] size:self.frame.size];
+    
+    body.position = CGPointMake(self.frame.size.width/2, self.frame.size.height/2);
+    body.zPosition = 0;
+    [self addChild:body];
+    
+    //draw a circle on the ground
+    CGRect box = CGRectMake(self.frame.size.width*0.1, self.frame.size.height/2-self.frame.size.width*0.4, self.frame.size.width*0.8, self.frame.size.width*0.8);
+    
+    UIBezierPath *circlePath = [UIBezierPath bezierPathWithOvalInRect:box];
+    
+    // //another method to draw circle Path
+    //CGMutablePathRef circlePath = CGPathCreateMutable();
+    //CGPathAddArc(circlePath, NULL, 0, 0, 100, 0, M_PI * 2, YES);
+    
+    SKShapeNode *circle = [SKShapeNode node];
+    circle.path = circlePath.CGPath;
+    circle.lineWidth = 6.0;
+    //circle.position = CGPointMake(self.frame.size.width/2, self.frame.size.height/2);
+    circle.fillColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
+    circle.strokeColor = [UIColor blueColor];
+    circle.zPosition = 1;
+    [self addChild:circle];
+    
+    //draw the middle line
+    CGRect midLine = CGRectMake(0, self.frame.size.height/2-3, self.frame.size.width, 6);
+    SKShapeNode *line = [SKShapeNode shapeNodeWithRect:midLine];
+    line.strokeColor =[UIColor blueColor];
+    line.fillColor = [UIColor blueColor];
+    line.zPosition =1;
+    [self addChild:line];
+    
+//    // set up the evironment of box2D
+//    //1 create a physics body that borders the screen
+//    SKPhysicsBody *borderBody = [SKPhysicsBody bodyWithEdgeLoopFromRect:self.frame];
+//    //2 Set physicsBody of scene to borderBody
+//    self.physicsBody = borderBody;
+//    //3 Set the friction of that physicsBody to zero
+//    self.physicsBody.friction =0.0f;
+    
+    // set up the surround edge for sound effect
+    //1 create a physics body that borders the screen
+    SKSpriteNode *border =[[SKSpriteNode alloc] init];
+    //border.physicsBody =[SKPhysicsBody bodyWithEdgeLoopFromRect:self.frame];
+    border.physicsBody = [SKPhysicsBody bodyWithEdgeLoopFromRect:CGRectMake(5, 5, self.frame.size.width-5,self.frame.size.height - 5)];
+    //2 Set physicsBody of scene to borderBody
+    self.physicsBody = border.physicsBody;
+    //3 Set the friction of that physicsBody to zero
+    self.physicsBody.friction =0.0f;
+    //4 body position
+    border.zPosition= 5;
+    border.name = @"border";
+    //[self addChild:border];
+    
+    
+}
+
+-(void)gameOverBackground{
+//    SKSpriteNode *over = [SKSpriteNode spriteNodeWithImageNamed:self.thebackground];
+//    //SKSpriteNode *body = [SKSpriteNode spriteNodeWithColor:[UIColor grayColor] size:self.frame.size];
+//    over.position = CGPointMake(self.frame.size.width/2, self.frame.size.height/2);
+//    over.zPosition = 20;
+//    over.name =@"over";
+//    [self addChild:over];
+    SKSpriteNode *puck = (SKSpriteNode *)[self childNodeWithName:@"puck"];
+    SKSpriteNode *mallet = (SKSpriteNode *)[self childNodeWithName:@"mallet"];
+    SKSpriteNode *opponent = (SKSpriteNode *)[self childNodeWithName:@"opponent"];
+    //[self.motionManager stopAccelerometerUpdates];
+    [puck removeFromParent];
+    [mallet removeFromParent];
+    [opponent removeFromParent];
+}
+
 -(void)add_puck{
     //set up the ball(puck)
     SKSpriteNode *puck = [SKSpriteNode spriteNodeWithImageNamed:@"ball.png"];
@@ -118,15 +209,17 @@ static inline CGVector boostVector(CGVector a, float b){
     puck.physicsBody.restitution = 0.9f;
     puck.physicsBody.linearDamping = 0.0f;
     puck.physicsBody.density = 1.0f;
-    puck.physicsBody.mass = 1.0f;
+    puck.physicsBody.mass = 2.0f;
+    puck.physicsBody.usesPreciseCollisionDetection = YES;
     puck.physicsBody.allowsRotation = YES;
+    puck.zPosition = 5;
     puck.name = @"puck";
     [self addChild:puck];
 }
 
 -(void)add_mallet{
     //set up the mallet
-    SKSpriteNode *mallet = [SKSpriteNode spriteNodeWithImageNamed:@"waitingpenguin.png"];
+    SKSpriteNode *mallet = [SKSpriteNode spriteNodeWithImageNamed:self.themallet];
     mallet.position = CGPointMake(self.frame.size.width/2, mallet.size.height/2);
     
     //physics body of mallet
@@ -134,13 +227,15 @@ static inline CGVector boostVector(CGVector a, float b){
     mallet.physicsBody.friction = 0.0f;
     mallet.physicsBody.restitution = 1.0f;
     mallet.physicsBody.linearDamping = 0.0f;
-    mallet.physicsBody.density= 100000.0f; //fail to simulate the speed for mallet to have force from moving object
-    mallet.physicsBody.mass = 100000.0f;
-    
+    mallet.physicsBody.density= 10000.0f; //fail to simulate the speed for mallet to have force from moving object
+    mallet.physicsBody.mass = 10000.0f;
+    mallet.physicsBody.usesPreciseCollisionDetection=YES;
+    mallet.zPosition =5;
     mallet.name = @"mallet";
     [self addChild:mallet];
     
-    mallet.physicsBody.dynamic = YES;
+    mallet.physicsBody.dynamic = NO;
+    [self positioning];
 }
 
 -(void)add_opponent{
@@ -153,11 +248,12 @@ static inline CGVector boostVector(CGVector a, float b){
     opponent.physicsBody.restitution = 1.0f;
     opponent.physicsBody.linearDamping = 1.0f;
     opponent.physicsBody.density=1.0f;
-    opponent.physicsBody.mass = 10.0f;
+    opponent.physicsBody.mass = 1000.0f;
+    opponent.zPosition =5;
     opponent.name = @"opponent";
     [self addChild:opponent];
 
-//    opponent.physicsBody.dynamic = YES;
+    opponent.physicsBody.dynamic = YES;
 }
 
 -(void)add_goals{
@@ -166,6 +262,7 @@ static inline CGVector boostVector(CGVector a, float b){
     goal.position = CGPointMake(self.frame.size.width/2, 0.8f);
     goal.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(self.frame.size.width/3,1.6f)];
     goal.physicsBody.dynamic = NO;
+    goal.zPosition=5;
     goal.name = @"goal";
     [self addChild:goal];
     
@@ -173,6 +270,7 @@ static inline CGVector boostVector(CGVector a, float b){
     goal2.position = CGPointMake(self.frame.size.width/2, self.frame.size.height -1.8f);
     goal2.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(self.frame.size.width/3,1.6f)];
     goal2.physicsBody.dynamic = NO;
+    goal2.zPosition = 5;
     goal2.name = @"goal2";
     [self addChild:goal2];
 }
@@ -182,15 +280,17 @@ static inline CGVector boostVector(CGVector a, float b){
     SKSpriteNode *mallet = (SKSpriteNode *)[self childNodeWithName:@"mallet"];
     SKSpriteNode *goal = (SKSpriteNode *)[self childNodeWithName:@"goal"];
     SKSpriteNode *goal2 = (SKSpriteNode *)[self childNodeWithName:@"goal2"];
-    
+    SKSpriteNode *border = (SKSpriteNode *)[self childNodeWithName:@"border"];
+   // SKSpriteNode *opponent =(SKSpriteNode *)[self childNodeWithName:@"opponent"];
     //setup the Category Bit Mask
     puck.physicsBody.categoryBitMask = puckCategory;
     mallet.physicsBody.categoryBitMask = malletCategory;
     goal.physicsBody.categoryBitMask = goalCategory;
     goal2.physicsBody.categoryBitMask = goalCategory;
-    
+    border.physicsBody.categoryBitMask = borderCategory;
+    //opponent.physicsBody.categoryBitMask = opponentCategory;
     //define the interaction that we care about
-    puck.physicsBody.contactTestBitMask = goalCategory | malletCategory; //get notice when puck touch goal
+    puck.physicsBody.contactTestBitMask = goalCategory | malletCategory | borderCategory | opponentCategory; //get notice when puck touch anything
     
     puck.physicsBody.collisionBitMask = malletCategory; //physics force when puck interact with mallet
 }
@@ -218,9 +318,13 @@ static inline CGVector boostVector(CGVector a, float b){
         if (secondsSinceLastDraw >1) {
             secondsSinceLastDraw = 1.0/60.0;
         }
-        
-        self.startX = self.startX + secondsSinceLastDraw *acceData.acceleration.x*700;
-        self.startY = self.startY + secondsSinceLastDraw *acceData.acceleration.y*1500;
+        self.speedPlayer = CGVectorMake(secondsSinceLastDraw *acceData.acceleration.x*800, secondsSinceLastDraw *acceData.acceleration.y*1500);
+        NSLog(@"speed of player %f", vectorLength(self.speedPlayer));
+        if (vectorLength(self.speedPlayer)>20) {
+            self.speedPlayer = boostVector(normalizeVector(self.speedPlayer),20);
+        }
+        self.startX = self.startX + self.speedPlayer.dx;
+        self.startY = self.startY + self.speedPlayer.dy;
         
         
         //NSLog(@"the X: %f the Y: %f",self.theX,self.theY);
@@ -231,6 +335,7 @@ static inline CGVector boostVector(CGVector a, float b){
         self.startY = MIN(self.MAXY, self.startY);
         
         mallet.position = CGPointMake(self.startX, self.startY);
+        
         
     //    self.lastUpdateTime = [NSDate date];
         
@@ -352,25 +457,22 @@ static inline CGVector boostVector(CGVector a, float b){
     }
     
     if (firstBody.categoryBitMask == puckCategory && secondBody.categoryBitMask == malletCategory) {
+        [self runAction:[SKAction playSoundFileNamed:@"touch.mp3" waitForCompletion:NO]];
+        
         SKSpriteNode *puck =(SKSpriteNode *)[self childNodeWithName:@"puck"];
         SKSpriteNode *mallet =(SKSpriteNode *)[self childNodeWithName:@"mallet"];
-        NSLog(@" go inside contact between puck and mallet");
+        //NSLog(@" go inside contact between puck and mallet");
         
-//        CGVector impulseForce = addVector(puck.physicsBody.velocity,[self getVectorfrom:puck.position to:mallet.position]);
-//        [puck.physicsBody applyImpulse:impulseForce];
-        if ([self checkspeed]==YES) {
-           [puck.physicsBody applyImpulse:[self getVectorfrom:puck.position to:mallet.position]];
-        } else {
-//            [puck.physicsBody applyImpulse:[self getVectorfrom:puck.position to:mallet.position]];
-            CGVector force = [self getVectorfrom:puck.position to:mallet.position];
-            CGVector mforce = CGVectorMake(force.dx*500000, force.dy*500000);
-            [puck.physicsBody applyForce:mforce];
-          
-        }
+        CGVector vector = CGVectorMake(puck.position.x - mallet.position.x,puck.position.y-mallet.position.y);
+        CGVector sum = addVector(vector, boostVector(self.speedPlayer,50));
+        [puck.physicsBody applyImpulse:sum];
+
+
         
     }
     
     if (firstBody.categoryBitMask == puckCategory && secondBody.categoryBitMask == goalCategory) {
+        [self runAction:[SKAction playSoundFileNamed:@"drop.mp3" waitForCompletion:NO]];
         SKSpriteNode *puck = (SKSpriteNode *)[self childNodeWithName:@"puck"];
         SKSpriteNode *mallet = (SKSpriteNode *)[self childNodeWithName:@"mallet"];
         SKSpriteNode *opponent = (SKSpriteNode *)[self childNodeWithName:@"opponent"];
@@ -381,6 +483,7 @@ static inline CGVector boostVector(CGVector a, float b){
             self.scorePlayer +=1;
         }else self.scoreOpponent +=1;
         
+        
         [puck removeFromParent];
         [mallet removeFromParent];
         [opponent removeFromParent];
@@ -389,15 +492,67 @@ static inline CGVector boostVector(CGVector a, float b){
         [self add_opponent];
         
         [self setupPhysicsContact];
-        [self positioning];
+        //[self positioning];
         [self score:self.scorePlayer and:self.scoreOpponent];
+        
+        if (self.scorePlayer >= self.scoreWin) {
+            [self gameOverBackground];
+            [self gameOverWithWin:YES];
+        }
+        
+        if (self.scoreOpponent >= self.scoreWin) {
+            [self gameOverBackground];
+            [self gameOverWithWin:NO];
+        }
+    }
+    
+    if (firstBody.categoryBitMask == puckCategory && secondBody.categoryBitMask == borderCategory) {
+        [self runAction:[SKAction playSoundFileNamed:@"edge.mp3" waitForCompletion:NO]];
+    }
+    
+    if (firstBody.categoryBitMask == puckCategory && secondBody.categoryBitMask == opponentCategory) {
+        [self runAction:[SKAction playSoundFileNamed:@"touch.mp3" waitForCompletion:NO]];
     }
 }
+
+- (void)gameOverWithWin:(BOOL)didWin
+{   [self.motionManager stopAccelerometerUpdates];
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:didWin ? @"You won!" : @"You lost!"
+//                                                    message:@"Game Over" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+//    
+//    [alert show];
+//    [self performSelector:@selector(goBack:) withObject:alert afterDelay:3.0];
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:didWin ? @"YOU WIN!!!":@"YOU LOST!" message:@"Do you want to rematch ?" preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *yes = [UIAlertAction actionWithTitle:@"YES" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+        [self reset];
+    }];
+    UIAlertAction *back = [UIAlertAction actionWithTitle:@"Back To Menu" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+        [self.motionManager stopAccelerometerUpdates];
+        [self.mainviewController.backgroundMusicPlayer stop];
+        [self.mainviewController.navigationController popToRootViewControllerAnimated:YES];
+        //[self.mainviewController dismissViewControllerAnimated:YES completion:nil];
+//        [self removeFromParent];
+//        [self.view presentScene:nil];
+    }];
+    [alertController addAction:yes];
+    [alertController addAction:back];
+    
+    [self.mainviewController presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)goBack:(UIAlertView *)alert
+{
+    [alert dismissWithClickedButtonIndex:0 animated:YES];
+    [self.mainviewController.navigationController popToRootViewControllerAnimated:NO];
+}
+
 -(BOOL)checkspeed{
     SKSpriteNode *puck =(SKSpriteNode *)[self childNodeWithName:@"puck"];
     
     float speed = vectorLength(puck.physicsBody.velocity);
-    NSLog(@"speed of puck %f",speed);
+    //NSLog(@"speed of puck %f",speed);
     if (speed < 100){
         return YES;
     }

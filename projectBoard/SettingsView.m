@@ -17,6 +17,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+//    extern NSString *thebackground;
+//    thebackground = @"background1.png";
 }
 
 - (void)didReceiveMemoryWarning {

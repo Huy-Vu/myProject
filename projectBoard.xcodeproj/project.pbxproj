@@ -51,6 +51,16 @@
 		2E070EBB1BC1EBFE00EDD7ED /* bg~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 2E070EAD1BC1EBFE00EDD7ED /* bg~iphone.png */; settings = {ASSET_TAGS = (); }; };
 		2E070EBC1BC1EBFE00EDD7ED /* bg~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 2E070EAD1BC1EBFE00EDD7ED /* bg~iphone.png */; settings = {ASSET_TAGS = (); }; };
 		2E1305B91BCCBA7900CA73C5 /* Background.png in Resources */ = {isa = PBXBuildFile; fileRef = 2E1305B81BCCBA7900CA73C5 /* Background.png */; settings = {ASSET_TAGS = (); }; };
+		2ECFBD731BCF428E003D3663 /* BeforeSinglePlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ECFBD721BCF428E003D3663 /* BeforeSinglePlayer.m */; settings = {ASSET_TAGS = (); }; };
+		2ECFBD751BCF55AE003D3663 /* background2.png in Resources */ = {isa = PBXBuildFile; fileRef = 2ECFBD741BCF55AE003D3663 /* background2.png */; settings = {ASSET_TAGS = (); }; };
+		2ECFBD811BCF5BCB003D3663 /* lion.gif in Resources */ = {isa = PBXBuildFile; fileRef = 2ECFBD801BCF5BCB003D3663 /* lion.gif */; settings = {ASSET_TAGS = (); }; };
+		2ECFBD831BCF62D1003D3663 /* lionTransparentBack.gif in Resources */ = {isa = PBXBuildFile; fileRef = 2ECFBD821BCF62D1003D3663 /* lionTransparentBack.gif */; settings = {ASSET_TAGS = (); }; };
+		2ECFBD851BCF762E003D3663 /* gameOver.png in Resources */ = {isa = PBXBuildFile; fileRef = 2ECFBD841BCF762E003D3663 /* gameOver.png */; settings = {ASSET_TAGS = (); }; };
+		2ECFBD871BCF7B84003D3663 /* touch.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2ECFBD861BCF7B84003D3663 /* touch.mp3 */; settings = {ASSET_TAGS = (); }; };
+		2ECFBD891BCF7BAD003D3663 /* monkey.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2ECFBD881BCF7BAD003D3663 /* monkey.mp3 */; settings = {ASSET_TAGS = (); }; };
+		2ECFBD8B1BCF7BD1003D3663 /* drop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2ECFBD8A1BCF7BD1003D3663 /* drop.mp3 */; settings = {ASSET_TAGS = (); }; };
+		2ECFBD8D1BCF7C3A003D3663 /* edge.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2ECFBD8C1BCF7C3A003D3663 /* edge.mp3 */; settings = {ASSET_TAGS = (); }; };
+		2ED063BA1BCF003C007E8971 /* background1.png in Resources */ = {isa = PBXBuildFile; fileRef = 2ED063B91BCF003C007E8971 /* background1.png */; settings = {ASSET_TAGS = (); }; };
 		2ED12D571BCB7A0300327C76 /* MGameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 2ED12D561BCB7A0300327C76 /* MGameScene.sks */; settings = {ASSET_TAGS = (); }; };
 		2ED12D5D1BCB7AC700327C76 /* MGameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ED12D5C1BCB7AC700327C76 /* MGameScene.m */; settings = {ASSET_TAGS = (); }; };
 		2ED12D601BCB7B2800327C76 /* MGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ED12D5F1BCB7B2800327C76 /* MGameViewController.m */; settings = {ASSET_TAGS = (); }; };
@@ -111,6 +121,17 @@
 		2E070EAC1BC1EBFE00EDD7ED /* bg~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg~ipad.png"; sourceTree = "<group>"; };
 		2E070EAD1BC1EBFE00EDD7ED /* bg~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg~iphone.png"; sourceTree = "<group>"; };
 		2E1305B81BCCBA7900CA73C5 /* Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Background.png; sourceTree = "<group>"; };
+		2ECFBD711BCF428E003D3663 /* BeforeSinglePlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BeforeSinglePlayer.h; sourceTree = "<group>"; };
+		2ECFBD721BCF428E003D3663 /* BeforeSinglePlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BeforeSinglePlayer.m; sourceTree = "<group>"; };
+		2ECFBD741BCF55AE003D3663 /* background2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background2.png; sourceTree = "<group>"; };
+		2ECFBD801BCF5BCB003D3663 /* lion.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = lion.gif; sourceTree = "<group>"; };
+		2ECFBD821BCF62D1003D3663 /* lionTransparentBack.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = lionTransparentBack.gif; sourceTree = "<group>"; };
+		2ECFBD841BCF762E003D3663 /* gameOver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gameOver.png; sourceTree = "<group>"; };
+		2ECFBD861BCF7B84003D3663 /* touch.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = touch.mp3; sourceTree = "<group>"; };
+		2ECFBD881BCF7BAD003D3663 /* monkey.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = monkey.mp3; sourceTree = "<group>"; };
+		2ECFBD8A1BCF7BD1003D3663 /* drop.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = drop.mp3; sourceTree = "<group>"; };
+		2ECFBD8C1BCF7C3A003D3663 /* edge.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = edge.mp3; sourceTree = "<group>"; };
+		2ED063B91BCF003C007E8971 /* background1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background1.png; sourceTree = "<group>"; };
 		2ED12D561BCB7A0300327C76 /* MGameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MGameScene.sks; sourceTree = "<group>"; };
 		2ED12D5B1BCB7AAE00327C76 /* MGameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGameScene.h; sourceTree = "<group>"; };
 		2ED12D5C1BCB7AC700327C76 /* MGameScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGameScene.m; sourceTree = "<group>"; };
@@ -179,11 +200,20 @@
 				2ED12D561BCB7A0300327C76 /* MGameScene.sks */,
 				2ED12D5E1BCB7B0700327C76 /* MGameViewController.h */,
 				2ED12D5F1BCB7B2800327C76 /* MGameViewController.m */,
+				2ECFBD8A1BCF7BD1003D3663 /* drop.mp3 */,
+				2ECFBD8C1BCF7C3A003D3663 /* edge.mp3 */,
+				2ECFBD881BCF7BAD003D3663 /* monkey.mp3 */,
+				2ECFBD861BCF7B84003D3663 /* touch.mp3 */,
 				2E070EA71BC1EBFE00EDD7ED /* Resources */,
 				2E070E7D1BC1BE8F00EDD7ED /* home_bg.jpg */,
+				2ECFBD741BCF55AE003D3663 /* background2.png */,
 				2E1305B81BCCBA7900CA73C5 /* Background.png */,
+				2ECFBD801BCF5BCB003D3663 /* lion.gif */,
+				2ECFBD821BCF62D1003D3663 /* lionTransparentBack.gif */,
+				2ECFBD841BCF762E003D3663 /* gameOver.png */,
 				2E070E531BC1BCE100EDD7ED /* Main.storyboard */,
 				2E070E561BC1BCE100EDD7ED /* Assets.xcassets */,
+				2ED063B91BCF003C007E8971 /* background1.png */,
 				2E070E581BC1BCE100EDD7ED /* LaunchScreen.storyboard */,
 				2E070E5B1BC1BCE100EDD7ED /* Info.plist */,
 				2ED347121BC41149009B5686 /* home_bg.jpg */,
@@ -198,6 +228,8 @@
 				2E070E9B1BC1C1CE00EDD7ED /* HomeView.m */,
 				2E070E9F1BC1C1E200EDD7ED /* MultiplayerView.h */,
 				2E070EA01BC1C1E200EDD7ED /* MultiplayerView.m */,
+				2ECFBD711BCF428E003D3663 /* BeforeSinglePlayer.h */,
+				2ECFBD721BCF428E003D3663 /* BeforeSinglePlayer.m */,
 			);
 			path = projectBoard;
 			sourceTree = "<group>";
@@ -355,18 +387,27 @@
 			buildActionMask = 2147483647;
 			files = (
 				2E070EB71BC1EBFE00EDD7ED /* bg~ipad.png in Resources */,
+				2ECFBD8B1BCF7BD1003D3663 /* drop.mp3 in Resources */,
 				2E070E4F1BC1BCE100EDD7ED /* GameScene.sks in Resources */,
+				2ECFBD8D1BCF7C3A003D3663 /* edge.mp3 in Resources */,
 				2E070E7E1BC1BE8F00EDD7ED /* home_bg.jpg in Resources */,
+				2ECFBD871BCF7B84003D3663 /* touch.mp3 in Resources */,
 				2E070EAE1BC1EBFE00EDD7ED /* assets.atlas in Resources */,
 				2E1305B91BCCBA7900CA73C5 /* Background.png in Resources */,
+				2ED063BA1BCF003C007E8971 /* background1.png in Resources */,
+				2ECFBD891BCF7BAD003D3663 /* monkey.mp3 in Resources */,
 				2E070E5A1BC1BCE100EDD7ED /* LaunchScreen.storyboard in Resources */,
+				2ECFBD751BCF55AE003D3663 /* background2.png in Resources */,
 				2ED347131BC41149009B5686 /* home_bg.jpg in Resources */,
 				2ED12D571BCB7A0300327C76 /* MGameScene.sks in Resources */,
+				2ECFBD831BCF62D1003D3663 /* lionTransparentBack.gif in Resources */,
 				2E070EB11BC1EBFE00EDD7ED /* bg@2x~ipad.png in Resources */,
 				2E070EBA1BC1EBFE00EDD7ED /* bg~iphone.png in Resources */,
 				2E070E571BC1BCE100EDD7ED /* Assets.xcassets in Resources */,
 				2E070E551BC1BCE100EDD7ED /* Main.storyboard in Resources */,
+				2ECFBD811BCF5BCB003D3663 /* lion.gif in Resources */,
 				2E070EB41BC1EBFE00EDD7ED /* bg@2x~iphone.png in Resources */,
+				2ECFBD851BCF762E003D3663 /* gameOver.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -408,6 +449,7 @@
 				2E070E4A1BC1BCE100EDD7ED /* AppDelegate.m in Sources */,
 				2E070E8D1BC1C17000EDD7ED /* InstructionView.m in Sources */,
 				2ED12D5D1BCB7AC700327C76 /* MGameScene.m in Sources */,
+				2ECFBD731BCF428E003D3663 /* BeforeSinglePlayer.m in Sources */,
 				2E070E971BC1C1A400EDD7ED /* AboutView.m in Sources */,
 				2E070E921BC1C19200EDD7ED /* SettingsView.m in Sources */,
 				2E070EA11BC1C1E200EDD7ED /* MultiplayerView.m in Sources */,

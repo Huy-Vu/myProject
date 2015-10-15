@@ -18,7 +18,8 @@
 @interface MGameScene : SKScene
 
 @property (nonatomic, weak) id<GameSceneDelegate> gameSceneDelegate;
-
+@property (nonatomic) NSString * thebackground;
+@property (nonatomic) NSString * themallet;
 
 -(void)startGame;
 -(void)discardSession;

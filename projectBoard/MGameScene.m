@@ -98,6 +98,8 @@ typedef struct {
 @property (nonatomic, strong) SKShapeNode * CircleCenter;
 @property (nonatomic, strong) SKSpriteNode * remotePlayer;
 
+@property (nonatomic) NSString *myIcon;
+@property (nonatomic) NSString *oppIcon;
 @end
 
 @implementation MGameScene
@@ -115,16 +117,16 @@ typedef struct {
     self.gameState = kGameStatePlayerToConnect;
     
     [self addGameBackground];
-    [self add_puck];
-    [self add_mallet];
-    [self add_opponent];
-    self.scorePlayer = 0;
-    self.scoreOpponent = 0;
-    [self score:self.scorePlayer and:self.scoreOpponent];
-    
-    [self add_goals];
-    [self setupPhysicsContact];
-    [self positioning];
+//    //[self add_puck];
+//    [self add_mallet];
+//    [self add_opponent];
+//    self.scorePlayer = 0;
+//    self.scoreOpponent = 0;
+//    [self score:self.scorePlayer and:self.scoreOpponent];
+//    
+//    [self add_goals];
+//    [self setupPhysicsContact];
+//    [self positioning];
 }
 
 #pragma mark - Public Methods
@@ -249,11 +251,39 @@ typedef struct {
                 if (gameUniqueIdForPlayerAllocation > gameUniqueId)
                 {
                     self.gameInfoLabel.text = kFirstPlayerLabelText;
+                    self.myIcon = @"waitingpenguin.png";
+                    self.oppIcon = @"seal.png";
+                        [self addGameBackground];
+                        //[self add_puck];
+                        [self add_mallet];
+                        [self add_opponent];
+                        self.scorePlayer = 0;
+                        self.scoreOpponent = 0;
+                        [self score:self.scorePlayer and:self.scoreOpponent];
+                        
+                        [self add_goals];
+                        [self setupPhysicsContact];
+                        [self positioning];
+
                     
                 }
                 else
                 {
                     self.gameInfoLabel.text = kSecondPlayerLabelText;
+                    self.myIcon = @"seal.png";
+                    self.oppIcon = @"waitingpenguin.png";
+                        [self addGameBackground];
+                        //[self add_puck];
+                        [self add_mallet];
+                        [self add_opponent];
+                        self.scorePlayer = 0;
+                        self.scoreOpponent = 0;
+                        [self score:self.scorePlayer and:self.scoreOpponent];
+                        
+                        [self add_goals];
+                        [self setupPhysicsContact];
+                        [self positioning];
+
                 }
                 break;
             }
@@ -428,7 +458,8 @@ typedef struct {
 
 -(void)add_mallet{
     //set up the mallet
-    SKSpriteNode *mallet = [SKSpriteNode spriteNodeWithImageNamed:@"waitingpenguin.png"];
+    //SKSpriteNode *mallet = [SKSpriteNode spriteNodeWithImageNamed:@"waitingpenguin.png"];
+    SKSpriteNode *mallet = [SKSpriteNode spriteNodeWithImageNamed:self.myIcon];
     mallet.position = CGPointMake(self.frame.size.width/2, mallet.size.height/2);
     
     //physics body of mallet
@@ -465,7 +496,7 @@ typedef struct {
 }
 -(void)add_opponent{
     //set up opponent mallet
-    SKSpriteNode *opponent = [SKSpriteNode spriteNodeWithImageNamed:@"seal.png"];
+    SKSpriteNode *opponent = [SKSpriteNode spriteNodeWithImageNamed:self.oppIcon];
     opponent.position = CGPointMake(self.frame.size.width/2, self.frame.size.height - opponent.size.height/2);
     
     opponent.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:opponent.size.height/2];

@@ -9,6 +9,12 @@
 #import "GameViewController.h"
 #import "GameScene.h"
 
+
+@interface GameViewController()
+
+
+@end
+
 @implementation SKScene (Unarchive)
 
 + (instancetype)unarchiveFromFile:(NSString *)file {
@@ -39,6 +45,13 @@
 -(void)viewWillLayoutSubviews{
     [super viewWillLayoutSubviews];
     
+    NSError *error;
+    NSURL * backgroundMusicURL = [[NSBundle mainBundle] URLForResource:@"monkey" withExtension:@"mp3"];
+    self.backgroundMusicPlayer = [[AVAudioPlayer alloc ] initWithContentsOfURL:backgroundMusicURL error:&error];
+    self.backgroundMusicPlayer.numberOfLoops = -1;
+    [self.backgroundMusicPlayer prepareToPlay];
+    [self.backgroundMusicPlayer play];
+    
     // Configure the view.
     SKView * skView = (SKView *)self.view;
     skView.showsFPS = YES;
@@ -47,10 +60,13 @@
     skView.ignoresSiblingOrder = YES;
     
     // Create and configure the scene.
-    SKScene *scene = [GameScene sceneWithSize:skView.bounds.size];
+    GameScene *scene = [GameScene sceneWithSize:skView.bounds.size];
     //GameScene *scene = [GameScene unarchiveFromFile:@"GameScene"];
     scene.scaleMode = SKSceneScaleModeAspectFill;
     
+    scene.thebackground = self.thebackground;
+    scene.themallet = self.themallet;
+    scene.mainviewController = self;
     // Present the scene.
     [skView presentScene:scene];
     
@@ -78,6 +94,10 @@
 
 - (BOOL)prefersStatusBarHidden {
     return YES;
+}
+- (IBAction)stop:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
+    [self.backgroundMusicPlayer stop];
 }
 
 @end
